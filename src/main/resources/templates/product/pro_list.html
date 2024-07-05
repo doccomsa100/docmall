@@ -142,6 +142,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
+      <!-- load()메서드를 이용하여, pro_info_2.html파일이 실행된 내용이 삽입된다. -->
       <div class="modal-body" id="popup_info">
         
       </div>
@@ -173,49 +174,87 @@
 		});
 
 		// name="btn_cart_add"
+		// $("button[name='btn_cart_add']").on("click", function() {
+
+		// 	$('#order_process_popup').modal('show');
+
+		// 	let pro_num = $(this).data("pro_num");
+
+		// 	console.log("상품코드", pro_num);
+
+		// 	$.ajax({
+		// 		url: '/product/pro_info',
+		// 		type: 'get',
+		// 		data: {pro_num : pro_num},
+		// 		dataType : 'json',
+		// 		success : function(result) {
+		// 			// result : 선택한 상품정보
+		// 			console.log("상품정보", result);
+
+		// 			// modal 창 요소를 접근해서 값을 대입.
+		// 			// id="info_pro_name"
+		// 			$("span#info_pro_name").html(result.pro_name);
+		// 			// id="info_pro_price"
+		// 			$("span#info_pro_price").html("￦" + result.pro_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+		// 			// id="info_pro_img"
+		// 			let url = `/product/image_display?dateFolderName=${result.pro_up_folder}&fileName=${result.pro_img}`;
+		// 			console.log("url", url);
+		// 			$("img#info_pro_img").attr("src", url);
+		// 		}
+		// 	});
+		// });
+
+		// <!-- Modal 2 --> name="btn_cart_add"
 		$("button[name='btn_cart_add']").on("click", function() {
 
-			$('#order_process_popup').modal('show');
+			$('#order_process_popup_2').modal('show');
 
 			let pro_num = $(this).data("pro_num");
 
 			console.log("상품코드", pro_num);
 
-			$.ajax({
-				url: '/product/pro_info',
-				type: 'get',
-				data: {pro_num : pro_num},
-				dataType : 'json',
-				success : function(result) {
-					// result : 선택한 상품정보
-					console.log("상품정보", result);
+			$("#popup_info").load("/product/pro_info_2?pro_num=" + pro_num);
 
-					// modal 창 요소를 접근해서 값을 대입.
-					// id="info_pro_name"
-					$("span#info_pro_name").html(result.pro_name);
-					// id="info_pro_price"
-					$("span#info_pro_price").html("￦" + result.pro_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
-					// id="info_pro_img"
-					let url = `/product/image_display?dateFolderName=${result.pro_up_folder}&fileName=${result.pro_img}`;
-					console.log("url", url);
-					$("img#info_pro_img").attr("src", url);
-				}
-			});
+
 		});
 
-
-		// name="btn_direct_order"
+		// <!-- Modal 2 -->  name="btn_direct_order"
 		$("button[name='btn_direct_order']").on("click", function() {
 
-		$('#order_process_popup_2').modal('show');
+			$('#order_process_popup_2').modal('show');
 
-		let pro_num = $(this).data("pro_num");
+			let pro_num = $(this).data("pro_num");
 
-		console.log("상품코드", pro_num);
+			console.log("상품코드", pro_num);
 
-		$("#popup_info").load("/product/pro_info_2?pro_num=" + pro_num);
+			$("#popup_info").load("/product/pro_info_2?pro_num=" + pro_num);
 
 
+		});
+
+		// 장바구니추가  modal2 pro_info_2.html  id="btn_cart_add"
+		$("#order_process_popup_2").on("click", "button#btn_cart_add",function() {
+
+			console.log("장바구니추가");
+
+			let pro_num = $(this).data("pro_num");
+			let cart_amount = $("#btn_cart_amount").val();
+
+			$.ajax({
+				url : '/cart/cart_add',
+				type: 'get',
+				data: {pro_num : pro_num, cart_amount : cart_amount},
+				dataType : "text",
+				success : function(result) {
+					if(result == 'success') {
+						alert("장바구니에 등록되었습니다.");
+						if(confirm("장바구니로 이동하시겠습니까?")) {
+							location.href = "장바구니주소";
+						}
+						$('#order_process_popup_2').modal('hide');
+					}
+				}
+			});
 		});
 
 

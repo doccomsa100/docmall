@@ -7,7 +7,7 @@
 		SELECT 
 			rev_code, mbsp_id, pro_num, rev_title, rev_content, rev_rate, rev_date
 		FROM (
-		    	SELECT /*+ INDEX_DESC(product_tbl PK_PRO_NUM)  */ 
+		    	SELECT /*+ INDEX_DESC(review_tbl pk_review_code)  */ 
 		        	ROWNUM AS RN, rev_code, mbsp_id, pro_num, rev_title, rev_content, rev_rate, rev_date
 		        	review_tbl
 		    	WHERE

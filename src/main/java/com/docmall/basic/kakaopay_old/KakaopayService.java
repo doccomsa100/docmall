@@ -1,4 +1,6 @@
-package com.docmall.basic.kakaopay;
+package com.docmall.basic.kakaopay_old;
+
+import java.net.URI;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -7,6 +9,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -44,6 +47,8 @@ public class KakaopayService {
 			parameters.add("fail_url", "http://localhost:9090/kakao/orderApproval"); // 결제 실패 시 redirect url, 최대 255자
 			
 			
+			
+			
 			// https://jung-story.tistory.com/132
 			
 			//헤더와 파라미터정보를 구성하는 작업
@@ -54,7 +59,50 @@ public class KakaopayService {
 			
 			String kakaoReadyUrl = "https://open-api.kakaopay.com/online/v1/payment/ready"; 
 			
+			log.info("요청파라미터: " + template.toString());
+			
 			readyResponse = template.postForObject(kakaoReadyUrl, requestEntity, ReadyResponse.class);
+			
+			log.info("응답데이터: " + readyResponse);
+		} catch (RestClientException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return readyResponse;
+	}
+	
+	public ReadyResponse payReady2(Long odr_code, String itemName, int quantity, String mbsp_id, int totalAmount) {
+		
+		// 응답받은 데이터
+		ReadyResponse readyResponse = null;
+		try {
+			
+			
+			String kakaoReadyUrl = "https://open-api.kakaopay.com/online/v1/payment/ready"; 
+
+			URI uri = UriComponentsBuilder
+						.fromUriString(kakaoReadyUrl)
+						.queryParam("cid", "TC0ONETIME")
+						.queryParam("partner_order_id", "partner_order_id")
+						.queryParam("partner_user_id", "partner_user_id")
+						.queryParam("item_name", "good")
+						.queryParam("quantity", "1")
+						.queryParam("total_amount", "2200")
+						.queryParam("vat_amount", "200")
+						.queryParam("tax_free_amount", "0")
+						.queryParam("approval_url", "http://localhost:9090/kakao/orderApproval")
+						.queryParam("cancel_url", "http://localhost:9090/kakao/orderApproval")
+						.queryParam("fail_url", "http://localhost:9090/kakao/orderApproval")
+						.build()
+						.toUri();
+			
+			log.info("uri= " + uri);
+			
+			RestTemplate template = new RestTemplate();
+			
+//			readyResponse = template.postForObject(kakaoReadyUrl, requestEntity, ReadyResponse.class);
+			readyResponse = template.postForObject(uri, null, ReadyResponse.class);
 			
 			log.info("응답데이터: " + readyResponse);
 		} catch (RestClientException e) {

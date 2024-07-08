@@ -375,22 +375,28 @@ REFERENCES PRODUCT_TBL(PRO_NUM);
 
 -- 7.상품후기테이블
 CREATE TABLE REVIEW_TBL (
-        RE_CODE        NUMBER      NOT NULL,
+        REV_CODE        NUMBER      NOT NULL,
         MBSP_ID        VARCHAR2(15) NOT NULL,
         PRO_NUM        NUMBER      NOT NULL,
-        RE_TITLE       VARCHAR2(50) NOT NULL,
-        RE_CONTENT     VARCHAR2(200) NOT NULL,
-        RE_RATE        NUMBER   NOT NULL,
-        RE_DATE        DATE DEFAULT SYSDATE
+        REV_TITLE       VARCHAR2(50) NOT NULL,
+        REV_CONTENT     VARCHAR2(200) NOT NULL,
+        REV_RATE        NUMBER   NOT NULL,
+        REV_DATE        DATE DEFAULT SYSDATE
 
 );
+/*
+review_tbl
+rev_code, mbsp_id, pro_num, rev_title, rev_content, rev_rate, rev_date
+pk_review_code
+*/
+
 
 --시퀀스 생성
 CREATE SEQUENCE SEQ_REVIEW_CODE;
 
 -- PRIMARY KEY 
 ALTER TABLE REVIEW_TBL
-ADD CONSTRAINT PK_REVIEW_CODE PRIMARY KEY (RE_CODE);
+ADD CONSTRAINT PK_REVIEW_CODE PRIMARY KEY (REV_CODE);
 
 
 -- FOREIGN KEY

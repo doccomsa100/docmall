@@ -1,4 +1,4 @@
-package com.docmall.basic.kakaopay;
+package com.docmall.basic.kakaopay_old;
 
 import lombok.Data;
 

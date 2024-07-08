@@ -13,5 +13,6 @@ public interface ProductMapper {
 	
 	int getCountProductByCategory(int cat_code);
 	
+	// 상품 팝업및 상세설명
 	ProductVo pro_info(int pro_num);
 }

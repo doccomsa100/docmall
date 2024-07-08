@@ -90,4 +90,16 @@ public class CartController {
 		return "redirect:/cart/cart_list";
 	}
 	
+	// 장바구니 비우기
+	@GetMapping("/cart_empty")
+	public String cart_empty(HttpSession session) throws Exception {
+		
+		String mbsp_id = ((UserVo) session.getAttribute("login_status")).getMbsp_id();
+		
+		cartService.cart_empty(mbsp_id);
+		
+		return "redirect:/cart/cart_list";
+	}
+	
+	
 }

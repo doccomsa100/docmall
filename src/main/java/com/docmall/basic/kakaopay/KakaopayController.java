@@ -34,8 +34,23 @@ public class KakaopayController {
 		return readyResponse;
 	}
 	
-	@GetMapping("/orderApproval")
-	public void orderApproval(String pg_token) {
+	@GetMapping("/approval")
+	public void approval(String pg_token) {
 		log.info("pg_token: " + pg_token);
+		String approveResponse = sampleService.approve(pg_token);
+		
+		log.info("최종결과: " + approveResponse);
+	}
+	
+	@GetMapping("/cancel")
+	public void cancel() {
+		
+		
+	}
+	
+	@GetMapping("/fail")
+	public void fail() {
+		
+		
 	}
 }

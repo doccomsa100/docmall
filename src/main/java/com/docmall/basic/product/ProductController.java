@@ -105,6 +105,7 @@ public class ProductController {
 		ProductVo vo = productService.pro_info(pro_num);
 		vo.setPro_up_folder(vo.getPro_up_folder().replace("\\", "/"));
 		
+		// 상품상세정보 model
 		model.addAttribute("product", vo);
 		
 		// 상품리뷰 model

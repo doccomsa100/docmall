@@ -45,9 +45,9 @@ public class SampleService {
                 .totalAmount(1100)
                 .taxFreeAmount(0)
                 .vatAmount(100)
-                .approvalUrl("http://localhost:9090/kakao/orderApproval")
-                .cancelUrl("http://localhost:9090/kakao/orderApproval")
-                .failUrl("http://localhost:9090/kakao/orderApproval")
+                .approvalUrl("http://localhost:9090/kakao/approval")
+                .cancelUrl("http://localhost:9090/kakao/cancel")
+                .failUrl("http://localhost:9090/kakao/fail")
                 .build();
 
         // Send reqeust

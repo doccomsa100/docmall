@@ -5,7 +5,38 @@
    <th:block layout:fragment="css">
         <!-- 각 페이지의 css -->
         <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.css">
-      </th:block>
+        <!-- 1) Include Handlebars from a CDN -->
+		<script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+   
+   		<script id="review-template" type="text/x-handlebars-template">
+   		<table id="revtable" class="table">
+	   	  <thead>
+	   	    <tr>
+	   	      <th scope="col">번호</th>
+	   	      <th scope="col">제목</th>
+	   	      <th scope="col">내용</th>
+	   	      <th scope="col">평점</th>
+			  <th scope="col">작성자</th>
+			  <th scope="col">등록일</th>
+			  <th scope="col">비고</th>
+	   	    </tr>
+	   	  </thead>
+	   	  <tbody>
+	   	   {{#each .}} 
+			<tr>
+	   	      <th scope="row">{{rev_code}}</th>
+	   	      <td>{{rev_title}}</td>
+	   	      <td>{{rev_content}}</td>
+	   	      <td>{{rev_rate}}</td>
+			  <td>{{mbsp_id}}</td>
+	   	      <td>{{rev_date}}</td>
+			  <td>비고</td>
+	   	    </tr>
+		   {{/each}}
+	   	  </tbody>
+   		</table>
+   		</script>
+   </th:block>
   
   
   <body>
@@ -55,7 +86,10 @@
 	    <p th:utext="${product.pro_content}"></p>
 	  </div>
 	  <div id="pro_review">
-	    <p>Morbi tincidunt, dui sit amet facilisis feugiat, odio metus gravida ante, ut pharetra massa metus id nunc. Duis scelerisque molestie turpis. Sed fringilla, massa eget luctus malesuada, metus eros molestie lectus, ut tempus eros massa ut dolor. Aenean aliquet fringilla sem. Suspendisse sed ligula in ligula suscipit aliquam. Praesent in eros vestibulum mi adipiscing adipiscing. Morbi facilisis. Curabitur ornare consequat nunc. Aenean vel metus. Ut posuere viverra nulla. Aliquam erat volutpat. Pellentesque convallis. Maecenas feugiat, tellus pellentesque pretium posuere, felis lorem euismod felis, eu ornare leo nisi vel felis. Mauris consectetur tortor et purus.</p>
+	    <div id="review_list">
+
+
+		</div>
 	  </div>
 	  <div id="pro_qna">
 	    <p>Mauris eleifend est et turpis. Duis id erat. Suspendisse potenti. Aliquam vulputate, pede vel vehicula accumsan, mi neque rutrum erat, eu congue orci lorem eget lorem. Vestibulum non ante. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Fusce sodales. Quisque eu urna vel enim commodo pellentesque. Praesent eu risus hendrerit ligula tempus pretium. Curabitur lorem enim, pretium nec, feugiat nec, luctus a, lacus.</p>
@@ -74,7 +108,7 @@
 
 <th:block layout:fragment="script">
  <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
-<script>
+<script th:inline="javascript">
 	
 	
 	$(document).ready(function() {
@@ -113,6 +147,35 @@
 
 		});
 
+
+		// 상품후기와 페이징정보를 호출하는 작업
+		let reviewPage = 1;
+		let url = "/review/revlist/" + [[${product.pro_num}]] + "/" + reviewPage;
+
+		// console.log("상품후기주소", url);
+
+		getReviewList(url);
+		
+		// ajax 문법을 통한 주소요청작업..  $.ajax, load(), getJSON()
+		function getReviewList(url) {
+			$.getJSON(url, function(reviewlist) {
+				//console.log("reviewlist", reviewlist.revlist);
+				//console.log("reviewlist", reviewlist.pageMaker);
+
+				print_reviewlist(reviewlist.revlist, $("#review_list"), $("#review-template"));
+
+			});
+		}
+
+		// 상품후기 UI작업
+		let print_reviewlist = function(reviewData, target, template) {
+			let templateObj = Handlebars.compile(template.html()); // 템플릿 문법검사및 참조
+			let reviewHtml = templateObj(reviewData);
+			target.children().remove();
+			target.append(reviewHtml);
+		}
+
+		// 페이징 UI작업
 		
 
 	}); // ready event end

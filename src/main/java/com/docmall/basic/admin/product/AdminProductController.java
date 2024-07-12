@@ -175,6 +175,9 @@ public class AdminProductController {
 		
 		int totalCount = adminProductService.getTotalCount(cri);
 		
+		
+//		log.info("pagedto" + new PageDTO(cri, totalCount));
+		
 		model.addAttribute("pro_list", pro_list);
 		model.addAttribute("pageMaker", new PageDTO(cri, totalCount));
 		

@@ -11,7 +11,7 @@
     $(document).ready(function() {
 
         $("#btn_order").on("click", function() {
-            $.ajax({
+          $.ajax({
           url: '/kakao/kakaoPay',
           type: 'get',
           dataType: 'json',
@@ -19,7 +19,7 @@
             console.log("응답: " + response);
 
             alert(response.next_redirect_pc_url);
-            location.href = response.next_redirect_pc_url;
+            location.href = response.next_redirect_pc_url; // 결제QR코드 주소이동
           }
         });
     });

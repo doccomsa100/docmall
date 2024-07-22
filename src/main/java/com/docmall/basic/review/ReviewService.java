@@ -25,6 +25,9 @@ public class ReviewService {
 	}
 	
 	public void review_save(ReviewVo vo) {
+		
+		// 상품테이블의 리뷰댓글카운트 컬럼에 update작업진행.
+		
 		reviewMapper.review_save(vo);
 	}
 	

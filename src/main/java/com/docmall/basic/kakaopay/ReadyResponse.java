@@ -1,20 +1,18 @@
 package com.docmall.basic.kakaopay;
 
+import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 /**
  * Created by kakaopay
  */
+
 @ToString
 public class ReadyResponse {
     private String tid;
-    private Boolean tms_result;
     private String created_at;
-    private String next_redirect_pc_url;
-    private String next_redirect_mobile_url;
-    private String next_redirect_app_url;
-    private String android_app_scheme;
-    private String ios_app_scheme;
+    private String next_redirect_pc_url; // 결제진행 QR코드주소
 
     public String getTid() {
         return tid;
@@ -23,15 +21,7 @@ public class ReadyResponse {
     public void setTid(String tid) {
         this.tid = tid;
     }
-
-    public Boolean getTms_result() {
-        return tms_result;
-    }
-
-    public void setTms_result(Boolean tms_result) {
-        this.tms_result = tms_result;
-    }
-
+    
     public String getCreated_at() {
         return created_at;
     }
@@ -48,35 +38,5 @@ public class ReadyResponse {
         this.next_redirect_pc_url = next_redirect_pc_url;
     }
 
-    public String getNext_redirect_mobile_url() {
-        return next_redirect_mobile_url;
-    }
-
-    public void setNext_redirect_mobile_url(String next_redirect_mobile_url) {
-        this.next_redirect_mobile_url = next_redirect_mobile_url;
-    }
-
-    public String getNext_redirect_app_url() {
-        return next_redirect_app_url;
-    }
-
-    public void setNext_redirect_app_url(String next_redirect_app_url) {
-        this.next_redirect_app_url = next_redirect_app_url;
-    }
-
-    public String getAndroid_app_scheme() {
-        return android_app_scheme;
-    }
-
-    public void setAndroid_app_scheme(String android_app_scheme) {
-        this.android_app_scheme = android_app_scheme;
-    }
-
-    public String getIos_app_scheme() {
-        return ios_app_scheme;
-    }
-
-    public void setIos_app_scheme(String ios_app_scheme) {
-        this.ios_app_scheme = ios_app_scheme;
-    }
+    
 }

@@ -332,6 +332,14 @@ CREATE TABLE ORDER_TBL(
         ORD_REGDATE         DATE DEFAULT SYSDATE    NOT NULL
 );
 
+/*
+테이블명 : order_tbl
+컬럼명 : ord_code, mbsp_id, ord_name, ord_addr_zipcode, ord_addr_basic, ord_addr_detail, ord_tel, ord_price, ord_desc, ord_admin_memo, ord_regdate
+시퀀스명: seq_ord_code
+인덱스명: pk_ord_code
+*/
+
+
 -- 시퀀스생성
 CREATE SEQUENCE SEQ_ORD_CODE;
 
@@ -345,6 +353,16 @@ ALTER TABLE ORDER_TBL
 ADD CONSTRAINT FK_ORDER_MBSP_ID
 FOREIGN KEY (MBSP_ID)
 REFERENCES MBSP_TBL(MBSP_ID);
+
+
+-- 테이블에 데이타가 존재시 추가 컬럼은 NOT NULL 이 안되고 NULL 사용해야 한다.
+-- 컬럼추가
+ALTER TABLE ORDER_TBL
+ADD ORD_DESC VARCHAR2(300);
+
+
+ALTER TABLE ORDER_TBL
+ADD ORD_ADMIN_MEMO VARCHAR2(100);
 
 
 
@@ -373,6 +391,26 @@ ADD CONSTRAINT FK_ORDETAIL_NUM
 FOREIGN KEY (PRO_NUM)
 REFERENCES PRODUCT_TBL(PRO_NUM);
 
+
+-- 관리자 주문관리
+-- 주문정보
+SELECT ot.ord_code, ot.pro_num, ot.dt_amount, ot.dt_price, p.pro_name, p.pro_up_folder, p.pro_img
+FROM ordetail_tbl ot INNER JOIN product_tbl p
+ON ot.pro_num = p.pro_num
+WHERE ot.ord_code = 11;
+
+
+-- 장바구니 -> 주문상세
+INSERT INTO
+   ordetail_tbl(ord_code, pro_num, dt_amount, dt_price) 
+SELECT
+    1, pro_num, cart_amount, pro_num * cart_amount
+FROM 
+    cart_tbl
+WHERE
+    mbsp_id  = 'user01';
+
+
 -- 7.상품후기테이블
 CREATE TABLE REVIEW_TBL (
         REV_CODE        NUMBER      NOT NULL,
@@ -388,6 +426,7 @@ CREATE TABLE REVIEW_TBL (
 review_tbl
 rev_code, mbsp_id, pro_num, rev_title, rev_content, rev_rate, rev_date
 pk_review_code
+seq_review_code
 */
 
 
@@ -470,10 +509,32 @@ ALTER TABLE NOTICE ADD CONSTRAINT FK_NOTICE_WRITER
 FOREIGN KEY (MBSP_ID) REFERENCES ADMIN_TBL(ADMIN_ID);
 
 
+DROP TABLE PAYINFO;
 
+-- 11. 결제테이블
+CREATE TABLE PAYINFO (
+    P_ID        NUMBER,
+    ORD_CODE    NUMBER NOT NULL,
+    MBSP_ID     VARCHAR2(15) NOT NULL,
+    PAYMETHOD   VARCHAR2(50)    NOT NULL,   -- 카카오페이, 무통장입금, 카드결제 등
+    PAYINFO     VARCHAR2(100)   NULL,   --  무통장인 경우에 은행/계좌번호/예금주
+    P_PRICE     NUMBER NOT NULL,            -- 총금액
+    P_STATUS    VARCHAR2(10)    NOT NULL,   -- 완납, 미납
+    P_DATE      DATE DEFAULT SYSDATE
+);
+-- p_id, ord_code, mbsp_id, paymethod, payinfo, p_price, p_status, p_date
+-- payinfo
+-- seq_payinfo_id
 
+CREATE SEQUENCE SEQ_PAYINFO_ID;
 
+-- PRIMARY KEY
+ALTER TABLE PAYINFO
+ADD CONSTRAINT PK_PAYINFO_IDX PRIMARY KEY (P_ID);
 
+-- 참조키 추가
+ALTER TABLE PAYINFO ADD CONSTRAINT FK_PAYINFO_ORD_CODE
+FOREIGN KEY (ORD_CODE) REFERENCES ORDER_TBL(ORD_CODE);
 
 
 

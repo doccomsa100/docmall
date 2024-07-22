@@ -46,6 +46,7 @@ public class PageDTO {
 		// 문제? 현재는 총 데이타수에 맞는 endPage 의 값을 구하지 못한 상태.
 		
 		// 실제 총 데이타수에 해당하는 블럭의 마지막 페이지번호
+		
 		int realEnd = (int) (Math.ceil((total * 1.0) / cri.getAmount()));
 		
 		// 아래 조건식이 true이면, endPage 변수의 값은 실제 테이블의 총개수를 이용한 마지막페이지번호의 의미가 된다.

@@ -94,8 +94,10 @@ public class ProductController {
 		// db연동
 		ProductVo vo = productService.pro_info(pro_num);
 		vo.setPro_up_folder(vo.getPro_up_folder().replace("\\", "/"));
-		
+				
 		model.addAttribute("product", vo);
+		
+		// 
 
 	}
 	

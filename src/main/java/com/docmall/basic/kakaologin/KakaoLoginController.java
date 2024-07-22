@@ -40,7 +40,7 @@ public class KakaoLoginController {
 		url.append("https://kauth.kakao.com/oauth/authorize?");
 		url.append("response_type=code");
 		url.append("&client_id=" + clientId);
-		url.append("&redirect_uri=" + redirectUri); // 	http://localhost:9090/oauth2/callback/kakao
+		url.append("&redirect_uri=" + redirectUri); // 	http://localhost:9090/oauth2/callback/kakao?code=값
 		
 		//추가옵션.  다시 사용자 인증을 수행하고자 할 때 사용
 		url.append("&prompt=login");
@@ -86,6 +86,7 @@ public class KakaoLoginController {
 			String sns_login_type = userService.existsUserInfo(sns_email);
 //			session.setAttribute("sns_type", sns_login_type);
 			
+			// docmall사이트 회원테이블에는 존재하지 않고, sns테이블에도 존재하지 않는 경우일 때, sns테이블에 저장한다.
 			if(userService.existsUserInfo(sns_email) == null && userService.sns_user_check(sns_email) == null) {
 				//SNS테이블 데이타 삽입작업.
 				SNSUserDto dto = new SNSUserDto();

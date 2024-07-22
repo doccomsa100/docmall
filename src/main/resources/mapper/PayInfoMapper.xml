@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.docmall.basic.payinfo.PayInfoMapper">
+
+	<insert id="payInfo_insert" parameterType="PayInfoVo">
+	
+		INSERT INTO
+			payinfo(p_id, ord_code, mbsp_id, paymethod, payinfo,  p_price, p_status)
+		VALUES
+			(seq_payinfo_id.NEXTVAL, #{ord_code}, #{mbsp_id}, #{paymethod}, #{payinfo}, #{p_price}, #{p_status})
+	
+	</insert>
+	
+	<select id="ord_pay_info" parameterType="Long" resultType="com.docmall.basic.payinfo.PayInfoVo">
+	
+		SELECT
+			<!-- p_id, ord_code, paymethod, p_price, p_status, p_date  p_date에러발생 p_price필드로 매핑하는 에러발생 -->
+			p_id, ord_code, mbsp_id, paymethod, payinfo, p_price, p_status, p_date
+		FROM
+			payinfo
+		WHERE
+			ord_code = #{ord_code}
+	
+	</select>
+
+</mapper>
